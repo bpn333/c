@@ -1,0 +1,2 @@
+movie = idiots
+seat = 33

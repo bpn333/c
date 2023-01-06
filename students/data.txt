@@ -1,0 +1,54 @@
+
+
+students details :-
+
+name : bpb
+roll : 4
+address : dj
+
+name : djdj
+roll : 2
+address : rjjr
+
+name : jrjrh
+roll : 1
+address : jdjd
+
+..................
+
+
+
+students details :-
+
+name : bpn
+roll : 1
+address : nepal
+
+name : bpn
+roll : 2
+address : nepal
+
+name : bpn
+roll : 1
+address : nepal
+
+..................
+
+
+
+students details :-
+
+name : bpn
+roll : 3
+address : nepal
+
+name : rameah
+roll : 4
+address : jehe
+
+name : pk21
+roll : -200196084
+address : y
+
+..................
+
