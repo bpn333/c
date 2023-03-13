@@ -2,8 +2,9 @@
 #include<stdlib.h>
 #include<unistd.h>
 #include<termios.h>
+#include<time.h>
 int width=50,height=30,up=0,side=0;
-int status=1;
+int status=1,enemy_alive=1,enemyx=50,enemyy=15,count=0,score=0,enemy_health=100;
 char c;
 void display(){
 	int i,j;
@@ -21,6 +22,18 @@ void display(){
 	        else if(i==(width/2)+1+side && j==(height/2)+up){
                         printf("n");
                 }
+		else if(i==enemyx && j==enemyy){
+			if(enemy_alive && enemy_health==200)
+				printf("B");
+			else if(enemy_alive && enemy_health==150)
+				printf("@");
+			else if(enemy_alive && enemy_health==100)
+				printf("0");
+			else if(enemy_alive && enemy_health==50)
+				printf(".");
+			else
+				printf(" ");
+		}
 		else{
 			printf(" ");
 		}
@@ -34,9 +47,17 @@ void shoot(){
 	for(int i=(width/2)+side;i<=width-3;i++){
         printf("-");
 	}
+	if (((height/2)+up)==enemyy && enemyx>((width/2)+side)){
+		enemy_health=enemy_health-50;
+		if(enemy_health<1){
+		enemy_alive=0;
+		score=score+1;
+		}
+	}
 	printf("\n");
 
 }
+
 
 void input(){
     struct termios old_termios, new_termios;
@@ -77,12 +98,44 @@ else if(up<-(height/2)){
 }
 }
 
+void enemy(){
+	if(enemy_alive)
+		enemyx=enemyx-1;
+	else
+		count=count+1;
+	if(count>3){
+		count=0;
+		enemyx=50;
+		enemyy=rand() % 28;
+		enemy_alive=1;
+		if((rand() % 100) < 20)
+			enemy_health=50;
+		else if((rand() % 100) < 80)
+			enemy_health=100;
+		else if((rand() % 100) < 95)
+			enemy_health=150;
+		else
+			enemy_health=200;
+		if(enemyy==1)
+			enemyy=2;
+		else if(enemyy==height)
+			enemyy=height-1;
+	}
+
+	if(enemyx==0){
+		status=0;
+	}
+}
 
 void main(){
 	while(status){
+	srand(time(0));
+	system("clear");
 	display();
 	input();
+	enemy();
 	//sleep(1);
-	system("clear");
 	}
+	system("clear");
+	printf(":( gameover\nscore=%d\n",score);
 }
