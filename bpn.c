@@ -4,7 +4,7 @@
 #include<termios.h>
 #include<time.h>
 int width=50,height=30,up=0,side=0;
-int status=1,enemy_alive=1,enemyx=50,enemyy=15,count=0,score=0,enemy_health=100;
+int status=1,enemy_alive=1,enemyx=50,enemyy=15,count=0,score=0,enemy_health=100,super_gun=0,super_gunx,super_guny,super_gun_drop=0;
 char c;
 void display(){
 	int i,j;
@@ -34,6 +34,15 @@ void display(){
 			else
 				printf(" ");
 		}
+		else if(super_gun_drop && i==super_gunx && j==super_guny){
+			printf("$");
+		}
+		else if(super_gun_drop && super_gunx==(width/2)+side && super_guny==(height/2)+up){
+			super_gun_drop=0;
+			super_gun=1;
+			printf(" ");
+		}
+
 		else{
 			printf(" ");
 		}
@@ -43,10 +52,12 @@ void display(){
 }
 
 void shoot(){
+	if(!super_gun){
 	printf("\033[%d;%dH", (height/2)+up, (width/2)+side+2);
 	for(int i=(width/2)+side;i<=width-3;i++){
         printf("-");
 	}
+
 	if (((height/2)+up)==enemyy && enemyx>((width/2)+side)){
 		enemy_health=enemy_health-50;
 		if(enemy_health<1){
@@ -55,9 +66,47 @@ void shoot(){
 		}
 	}
 	printf("\n");
+	}
+	else{
+		printf("\033[%d;%dH", (height/2)+up-1, (width/2)+side+2);
+		for(int i=(width/2)+side;i<=width-3;i++){
+			printf("+");
+		}
+		printf("\n");
+		printf("\033[%d;%dH", (height/2)+up, (width/2)+side+2);
+                for(int i=(width/2)+side;i<=width-3;i++){
+                        printf("+");
+                }
+                printf("\n");
+		printf("\033[%d;%dH", (height/2)+up+1, (width/2)+side+2);
+                for(int i=(width/2)+side;i<=width-3;i++){
+                        printf("+");
+                }
+		if (((height/2)+up-1)==enemyy && enemyx>((width/2)+side)){
+			enemy_health=enemy_health-500;
+			if(enemy_health<1){
+				enemy_alive=0;
+				score=score+1;
+			}
+		}
+		if (((height/2)+up)==enemyy && enemyx>((width/2)+side)){
+                        enemy_health=enemy_health-500;
+                        if(enemy_health<1){
+                                enemy_alive=0;
+                                score=score+1;
+                        }
+		}
+		if (((height/2)+up+1)==enemyy && enemyx>((width/2)+side)){
+                        enemy_health=enemy_health-500;
+                        if(enemy_health<1){
+                                enemy_alive=0;
+                                score=score+1;
+                        }
+		}
+                printf("\n");
+	}
 
 }
-
 
 void input(){
     struct termios old_termios, new_termios;
@@ -83,7 +132,6 @@ else if(c=='x'){
 	shoot();
 }
 
-
 if(side>width/2){
 	side=-(width/2);
 }
@@ -106,7 +154,7 @@ void enemy(){
 	if(count>3){
 		count=0;
 		enemyx=50;
-		enemyy=rand() % 28;
+		enemyy=rand() % 30;
 		enemy_alive=1;
 		if((rand() % 100) < 20)
 			enemy_health=50;
@@ -118,13 +166,26 @@ void enemy(){
 			enemy_health=200;
 		if(enemyy==1)
 			enemyy=2;
-		else if(enemyy==height)
-			enemyy=height-1;
+		else if(enemyy==0)
+			enemyy=2;
+
+	}
+
+	if(!super_gun){
+	if( rand() % 100 == 0){
+		super_gun_drop=1;
+		super_gunx=rand() % 50;
+		super_guny=rand() % 30;
+		if(super_gunx==0 || super_gunx==1)
+			super_gunx=2;
+		if(super_guny==0 || super_guny==1)
+			super_guny==2;
 	}
 
 	if(enemyx==0){
 		status=0;
 	}
+}
 }
 
 void main(){
