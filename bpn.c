@@ -5,7 +5,7 @@
 #include<time.h>
 int width=50,height=30,up=0,side=0;
 int status=1,enemy_alive=1,enemyx=50,enemyy=15,count=0,score=0,enemy_health=100,super_gun=0,super_gunx,super_guny,super_gun_drop=0;
-char c;
+char c,character[3]={'b','p','n'};
 void display(){
 	int i,j;
 	for(j=1;j<=height;j++){
@@ -14,13 +14,13 @@ void display(){
 			printf("#");
 		}
                 else if(i==(width/2)-1+side && j==(height/2)+up){
-                        printf("b");
+                        printf("%c",character[0]);
                 }
 		else if(i==(width/2)+side && j==(height/2)+up){
-			printf("p");
+			printf("%c",character[1]);
 		}
 	        else if(i==(width/2)+1+side && j==(height/2)+up){
-                        printf("n");
+                        printf("%c",character[2]);
                 }
 		else if(i==enemyx && j==enemyy){
 			if(enemy_alive && enemy_health==200)
@@ -49,6 +49,7 @@ void display(){
 		}
 		printf("\n");
 	}
+	printf("kill=%d\n",score);
 }
 
 void shoot(){
@@ -153,8 +154,8 @@ void enemy(){
 		count=count+1;
 	if(count>3){
 		count=0;
-		enemyx=50;
-		enemyy=rand() % 30;
+		enemyx=width;
+		enemyy=rand() % height;
 		enemy_alive=1;
 		if((rand() % 100) < 20)
 			enemy_health=50;
@@ -181,11 +182,11 @@ void enemy(){
 		if(super_guny==0 || super_guny==1)
 			super_guny==2;
 	}
+	}
 
 	if(enemyx==0){
 		status=0;
 	}
-}
 }
 
 void main(){
