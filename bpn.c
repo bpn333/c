@@ -183,7 +183,7 @@ void enemy(){
 		if(super_gunx==0 || super_gunx==1)
 			super_gunx=2;
 		if(super_guny==0 || super_guny==1)
-			super_guny==2;
+			super_guny=2;
 	}
 	}
 
