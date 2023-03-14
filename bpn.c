@@ -132,6 +132,9 @@ else if(c=='d'){
 else if(c=='x'){
 	shoot();
 }
+else if(c=='q'){
+	status=0;
+}
 
 if(side>width/2){
 	side=-(width/2);
@@ -175,8 +178,8 @@ void enemy(){
 	if(!super_gun){
 	if( rand() % 100 == 0){
 		super_gun_drop=1;
-		super_gunx=rand() % 50;
-		super_guny=rand() % 30;
+		super_gunx=rand() % width;
+		super_guny=rand() % height;
 		if(super_gunx==0 || super_gunx==1)
 			super_gunx=2;
 		if(super_guny==0 || super_guny==1)
