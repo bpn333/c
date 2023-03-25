@@ -1,10 +1,9 @@
 #include<stdio.h>
 #include<stdlib.h>
-#include<unistd.h>
 #include "conio.h"
 #include<time.h>
 
-const int width=50,height=30;
+const int width=50,height=30,cap=13;
 char screen[50][30];
 int gameover=0,count=0,path=1,score=0;
 int playerx,playery,pathx,pathy;
@@ -50,7 +49,7 @@ char input(){
 void logic(){
         char c=input();
         if(c==' ')
-                playery=playery-1;
+                playery=playery-2;
         else if(c=='q')
                 gameover=1;
 
@@ -64,16 +63,20 @@ void logic(){
                 score=score+1;
                 pathx=width;
                 if(rand()%2==0)
-                     pathy=(height/2) + rand() % 5;
+                     pathy=playery + rand() % 5;
                 else
-                         pathy=(height/2) - rand() % 5;
+                         pathy=playery - rand() % 5;
+                if(pathy<0 || pathy>height)
+                        pathy=height/2;
         }
+        if(playery>height || playery<0)
+                gameover=1;
 
 }
 
 void gravity(){
         playery=playery+1;
-        pathx=pathx-3;
+        pathx=pathx-5;
 }
 
 void main(){
@@ -87,7 +90,7 @@ void main(){
                 initialize();
                 display();
                 logic();
-                if(count>30){
+                if(count>cap){
                         gravity();
                         count=0;
                 }
